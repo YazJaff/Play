@@ -1,0 +1,35 @@
+SWIGGY		1
+EMI PRINCIPAL 	2
+EMI INTEREST	2
+
+GST 		3
+DEBIT INTEREST	3
+LATE PAYMENT FEE3
+
+MOBILE PAYMENT	4
+
+
+others	5
+
+Merchants:
+RESTAURANTS
+HOTELS 
+JEWELLERY 
+ELECTRONICS 
+
+<#
+    if contentss[k].find("POS")!= -1 or contentss[k].find("UPI")!= -1:
+        
+        descCount=descCount+1
+        print(contentss[k])
+    if contentss[k].find("/19")!= -1:
+        count=count+1
+        print(contentss[k])
+    if contentss[k].find(".0")!=-1:
+        count=count+1
+        print(contentss[k])
+    if count==5:
+        print("_______")
+        count=0
+
+#>
