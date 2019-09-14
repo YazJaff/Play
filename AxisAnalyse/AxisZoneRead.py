@@ -1,4 +1,5 @@
 import PyPDF2
+from Playyz import bits_Parse
 def pickVals(data):
     dates=[]
     merchs=[]
@@ -11,30 +12,35 @@ def pickVals(data):
     while i<len(data):
         datum=data[i]
         if datum.find('IMTHIYAZ')>0:
-            #datas.append(data[i][indxIMT:len(data[i])])
             datum=datum[datum.find('IMTHIYAZ'):len(datum)]
-            #ate=datum[datum.find('/2019')-5:datum.find('/2019')+5]
             dates.append(datum[datum.find('/2019')-5:datum.find('/2019')+5])
-            merchBuff=datum[datum.find('/2019')+5:len(datum)]
-            print(dates)
-            print(merchBuff)
-            
-            print('-------iii----->>>>>>>>>',datum)
+            merchBuff=datum[datum.find('/2019')+5:len(datum)]+'$'
         else :
-            datas.append(data[i])
-            print('------------>>>>>>>>>',data[i])
+            bits=bits_Parse(data[i])
+            if bits[2]=='Dr':   #corD
+                merchs.append(merchBuff+'~'+bits[0])
+                merchBuff=bits[4]    
+                amtDrs.append(bits[1])
+            else:
+                payments.append(merchBuff+'~'+bits[0])
+                merchBuff=bits[4]
+                amtCrs.append(bits[1])
         i+=1
-    
-    print(len(datas))
-        
-
-
-file = open("C:\\Python38\\zYpython\\BankRepos\\Axis\\CreditCardStatement_JUL_2019.pdf",'rb')
+    print(len(merchs),' -   ',len(amtDrs))
+    j=0
+    while j<len(merchs) and j<len(amtDrs):
+        print(merchs[j],    '   ->>>>>>   ',amtDrs[j])
+        j+=1
+    print(len(payments),' -   ',len(amtCrs))
+    j=0
+    while j<len(payments) and j<len(amtCrs):
+        print(payments[j],    '   ->>>>>>   ',amtCrs[j])
+        j+=1
+file = open("C:\\Python38\\zYpython\\BankRepos\\Axis\\CreditCardStatement_JUN_2019.pdf",'rb')
 reading = PyPDF2.PdfFileReader(file)
 if reading.isEncrypted:
     reading.decrypt('KIMT9801')
 pages = reading.getNumPages()
-print(pages)
 i=0
 while i<pages:
     pg_content = reading.getPage(i)
