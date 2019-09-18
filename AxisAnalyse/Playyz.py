@@ -11,8 +11,9 @@ def bits_Parse(datum):
             if sale[i] in num:
                 rsIndx.append(i)
             i+=1
-        
         amt=sale[rsIndx[0]:rsIndx[-1]]
+        if amt.find(',')>0:
+            amt=amt[0:amt.find(',')]+amt[amt.find(',')+1:len(amt)]
         if len(sale[0:rsIndx[0]])<2:
             sale='-'
         else:
@@ -21,12 +22,19 @@ def bits_Parse(datum):
         date='-'
         sale='-'
         nxtSale='-'
-        if datum.find('Dr'):
+        if datum.find('Dr')>0:
             amt=datum[0:datum.find('Dr')]
+            if amt.find(',')>0:
+                amt=amt[0:amt.find(',')]+amt[amt.find(',')+1:len(amt)]
             CorD=datum[datum.find('Dr'):datum.find('Dr')+2]
+        elif datum.find('Cr')>0:
+            amt=datum[0:datum.find('Cr')]
+            if amt.find(',')>0:
+                amt=amt[0:amt.find(',')]+amt[amt.find(',')+1:len(amt)]
+            CorD=datum[datum.find('Cr'):datum.find('Cr')+2]
     ret_Arr=[]
     ret_Arr.append(sale)
-    ret_Arr.append(amt)
+    ret_Arr.append(float(amt))
     ret_Arr.append(CorD)
     ret_Arr.append(date)
     ret_Arr.append(nxtSale)
@@ -40,5 +48,6 @@ def bits_Parse(datum):
 #datum='RESTAURANTS277.00 Dr27/06/2019SWIGGY'
 #datum='231.59 Dr15/07/2019DEBIT INTEREST'
 datum=' 1,286.63 Dr   EMI BALANCESAmazon Seller Services'
+datum=' 100.00 Cr   EMI BALANCESAmazon Seller Service'
 abc=bits_Parse(datum)
 #print(abc)
