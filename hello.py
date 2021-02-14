@@ -1,2 +1,2 @@
-msg="Yz in Python VS"
+msg="Hello Python in VS"
 print (msg)
